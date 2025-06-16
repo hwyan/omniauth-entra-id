@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
     'source_code_uri' => 'https://github.com/RIPAGlobal/omniauth-entra-id'
   }
 
+  s.add_runtime_dependency('jwt', '>= 2.9.2')
   s.add_runtime_dependency('omniauth-oauth2', '~> 1.8')
 
   s.add_development_dependency('debug', '~>  1.9 ')

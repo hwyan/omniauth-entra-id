@@ -154,16 +154,14 @@ module OmniAuth
 
           # https://learn.microsoft.com/en-us/entra/identity-platform/id-tokens#validate-tokens
           #
-          JWT::Verify.verify_claims(
-            id_token_data,
-            verify_iss:        !issuer.nil?,
-            iss:               issuer,
-            verify_aud:        true,
-            aud:               options.client_id,
-            verify_expiration: true,
-            verify_not_before: true,
-            leeway:            options[:jwt_leeway]
-          )
+          verify_params = {
+            aud: options.client_id,
+            exp: { leeway: options.jwt_leeway },
+            nbf: { leeway: options.jwt_leeway }
+          }
+          verify_params[:iss] = issuer unless issuer.nil?
+
+          ::JWT::Claims.verify_payload!(id_token_data, verify_params)
 
           auth_token_data = begin
             ::JWT.decode(access_token.token, nil, false).first
