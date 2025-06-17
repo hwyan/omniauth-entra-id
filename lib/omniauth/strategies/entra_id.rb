@@ -9,14 +9,15 @@ module OmniAuth
 
       option :name,            'entra_id'
       option :tenant_provider, nil
+      option :ignore_tid,      false
       option :jwt_leeway,      60
 
       DEFAULT_SCOPE    = 'openid profile email'
       COMMON_TENANT_ID = 'common'
       AD_FS_TENANT_ID  = 'adfs'
 
-      # The tenant_provider must return client_id, client_secret and,
-      # optionally, tenant_id and base_url.
+      # The tenant_provider argument is how the provider class is eventually
+      # passed to us, if one is used instead of an options Hash.
       #
       args [:tenant_provider]
 
@@ -58,6 +59,7 @@ module OmniAuth
         options.custom_policy                = provider.custom_policy    if provider.respond_to?(:custom_policy)
         options.authorize_params             = provider.authorize_params if provider.respond_to?(:authorize_params)
         options.authorize_params.domain_hint = provider.domain_hint      if provider.respond_to?(:domain_hint) && provider.domain_hint
+        options.ignore_tid                   = provider.ignore_tid?      if provider.respond_to?(:ignore_tid?) && provider.ignore_tid?
         options.authorize_params.prompt      = request.params['prompt']  if defined?(request) && request.params['prompt']
 
         options.authorize_params.scope = if defined?(request) && request.params['scope']
@@ -88,16 +90,32 @@ module OmniAuth
 
       uid do
         #
-        # https://learn.microsoft.com/en-us/entra/identity-platform/migrate-off-email-claim-authorization
+        # Note 1:
+        #
+        #   https://learn.microsoft.com/en-us/entra/identity-platform/migrate-off-email-claim-authorization
         #
         # OID alone might not be unique; TID must be included. An alternative
         # would be to use 'sub' but this is only unique in client/app
         # registration context. If a different app registration is used, the
-        # 'sub' values can be different too.
+        # 'sub' values can be different too...
         #
-        # NOTE: raw_info['tid'] might be nil, for example when using ADFS, so use .to_s on it
+        # Note 2:
         #
-        raw_info['tid'].to_s + raw_info['oid'] 
+        #   https://github.com/pond/omniauth-entra-id/issues/42
+        #
+        # ...but not everyone agrees on the necessity of a TID and if migrating
+        # from an earlier version of this gem where user data already includes
+        # OID-only identifiers, you might elect to avoid a difficult migration
+        # by opting out - set the "ignore_tid" option to 'true'.
+        #
+        # NB: If the TID is missing or blank the UID uses only the OID, just as
+        # if the "ignore_tid" option were set.
+        #
+        if options.ignore_tid? || raw_info['tid'].nil?
+          raw_info['oid']
+        else
+          raw_info['tid'] + raw_info['oid']
+        end
       end
 
       info do
