@@ -1,8 +1,8 @@
 module OmniAuth
   module Entra
     module Id
-      VERSION = "3.0.1"
-      DATE    = "2024-11-21"
+      VERSION = "3.1.0"
+      DATE    = "2025-06-17"
     end
   end
 end
