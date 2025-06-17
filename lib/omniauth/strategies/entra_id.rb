@@ -95,7 +95,9 @@ module OmniAuth
         # registration context. If a different app registration is used, the
         # 'sub' values can be different too.
         #
-        raw_info['tid'] + raw_info['oid']
+        # NOTE: raw_info['tid'] might be nil, for example when using ADFS, so use .to_s on it
+        #
+        raw_info['tid'].to_s + raw_info['oid'] 
       end
 
       info do
