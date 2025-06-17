@@ -1,5 +1,12 @@
 # Change Log
 
+## v3.1.0 (2025-06-17)
+
+* Provides a way to ignore TID when constructing a user UID, easing migration from v2.x, via the new `ignore_tid` option, resolving #42 (reported by @s-andringa)
+* Handles a missing (`nil`) TID, via #46 (thanks to @frenkel)
+* Ruby 3.4 "officially" supported through coverage in CI, via #47 (thanks to @hakeem0114)
+* Supports JWT gem v2.9.x or v3.x, via #48 (thanks to @djpremier)
+
 ## v3.0.1 (2024-11-21)
 
 * Fixes a minor error in [`UPGRADING.md`](UPGRADING.md) reported in #38, via #40 (thanks to @kennethgeerts)
