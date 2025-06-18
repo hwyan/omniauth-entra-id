@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.authors               = [ 'RIPA Global'        ]
   s.email                 = [ 'dev@ripaglobal.com' ]
   s.licenses              = [ 'MIT'               ]
-  s.homepage              = 'https://github.com/pond/scimitar/'
+  s.homepage              = 'https://github.com/pond/omniauth-entra-id'
 
   s.required_ruby_version = Gem::Requirement.new('>= 3.0.0')
   s.require_paths         = ['lib']
