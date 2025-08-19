@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.licenses              = [ 'MIT'               ]
   s.homepage              = 'https://github.com/pond/omniauth-entra-id'
 
-  s.required_ruby_version = Gem::Requirement.new('>= 3.0.0')
+  s.required_ruby_version = Gem::Requirement.new('>= 2.6.0')
   s.require_paths         = ['lib']
   s.bindir                = 'exe'
   s.files                 = %w{
@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'jwt',             '>= 2.9.2'
   s.add_runtime_dependency 'omniauth-oauth2', '~> 1.8'
 
-  s.add_development_dependency 'debug', '~>  1.11'
+  s.add_development_dependency 'debug', '~>  1.8'
   s.add_development_dependency 'rake',  '~> 13.3'
   s.add_development_dependency 'rspec', '~>  3.13'
 end

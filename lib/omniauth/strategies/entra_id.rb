@@ -135,6 +135,10 @@ module OmniAuth
         { raw_info: raw_info }
       end
 
+      def full_host
+        (options.respond_to?(:full_host) && options.full_host) || super
+      end
+
       def callback_url
         full_host + callback_path
       end
