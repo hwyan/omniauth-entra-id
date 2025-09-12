@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'jwt',             '>= 2.9.2'
   s.add_runtime_dependency 'omniauth-oauth2', '~> 1.8'
 
-  s.add_development_dependency 'debug', '~>  1.10'
+  s.add_development_dependency 'debug', '~>  1.11'
   s.add_development_dependency 'rake',  '~> 13.3'
   s.add_development_dependency 'rspec', '~>  3.13'
 end

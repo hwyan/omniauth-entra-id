@@ -1,5 +1,9 @@
 # Change Log
 
+## v3.1.1 (2025-09-12)
+
+* Validates the JWT `iss` (issuer) claim for `consumers` tenants properly, using the global GUID for that use case, resolving #51 (reported by @2called-chaos)
+
 ## v3.1.0 (2025-06-17)
 
 * Provides a way to ignore TID when constructing a user UID, easing migration from v2.x, via the new `ignore_tid` option, resolving #42 (reported by @s-andringa)
