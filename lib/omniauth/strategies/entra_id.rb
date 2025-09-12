@@ -12,9 +12,12 @@ module OmniAuth
       option :ignore_tid,      false
       option :jwt_leeway,      60
 
-      DEFAULT_SCOPE    = 'openid profile email'
-      COMMON_TENANT_ID = 'common'
-      AD_FS_TENANT_ID  = 'adfs'
+      DEFAULT_SCOPE           = 'openid profile email'
+      COMMON_TENANT_ID        = 'common'
+      AD_FS_TENANT_ID         = 'adfs'
+      ORGANIZATIONS_TENANT_ID = 'organizations'
+      CONSUMERS_TENANT_ID     = 'consumers'
+      CONSUMERS_TENANT_GUID   = '9188040d-6c67-4c5b-b112-36a304b66dad'
 
       # The tenant_provider argument is how the provider class is eventually
       # passed to us, if one is used instead of an options Hash.
@@ -160,6 +163,8 @@ module OmniAuth
           # for AD FS local instances, as we don't put a valid tenant ID in its
           # place, but "adfs" (see AD_FS_TENANT_ID) instead.
           #
+          # TODO: Unclear about approach to use for ORGANIZATIONS_TENANT_ID.
+          #
           do_not_verify = (
             options.tenant_id.nil? ||
             options.tenant_id == COMMON_TENANT_ID ||
@@ -168,6 +173,8 @@ module OmniAuth
 
           issuer = if do_not_verify
             nil
+          elsif options.tenant_id == CONSUMERS_TENANT_ID
+            "#{options.base_url || BASE_URL}/#{CONSUMERS_TENANT_GUID}/v2.0"
           else
             "#{options.base_url || BASE_URL}/#{options.tenant_id}/v2.0"
           end

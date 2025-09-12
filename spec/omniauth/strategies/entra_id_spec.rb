@@ -787,6 +787,28 @@ RSpec.describe OmniAuth::Strategies::EntraId do
             expect { subject.info }.to_not raise_error()
           end
         end # "context '"common" tenant specified' do"
+
+        context '"consumers" tenant specified' do
+          subject do
+            OmniAuth::Strategies::EntraId.new(app, {client_id: 'id', client_secret: 'secret', tenant_id: OmniAuth::Strategies::EntraId::CONSUMERS_TENANT_ID})
+          end
+
+          it 'raises an error as the issuer *is* checked' do
+            expect { subject.info }.to raise_error(JWT::InvalidIssuerError)
+          end
+
+          context 'with the "magic" tenant ID' do
+            let(:id_token_info) do
+              hash = super()
+              hash['iss'] = 'https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0'
+              hash
+            end
+
+            it 'raises no error' do
+              expect { subject.info }.to_not raise_error()
+            end
+          end # "context 'with the "magic" tenant ID' do"
+        end # "context '"consumers" tenant specified' do"
       end # "context 'multi-tenant, AD FS' do"
     end # "context 'issuers' do"
 
